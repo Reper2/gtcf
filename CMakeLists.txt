@@ -46,6 +46,8 @@ if(EMSCRIPTEN)
         "-sWASM=1"
         "-sALLOW_MEMORY_GROWTH=1"
         "-sFORCE_FILESYSTEM=1"
+        "-lidbfs.js"
+        "-sEXPORTED_RUNTIME_METHODS=['FS','IDBFS']"
         "--shell-file" "${CMAKE_CURRENT_SOURCE_DIR}/web/shell.html"
         "--preload-file" "${CMAKE_CURRENT_SOURCE_DIR}/resources@/resources"
     )

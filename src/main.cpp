@@ -38,9 +38,15 @@ void LoadHighScore()
   if (!filesystemMounted)
   {
     EM_ASM({
-      FS.mkdir('/savestate');
-      // Use FS.filesystems.IDBFS instead of just IDBFS
-      FS.mount(FS.filesystems.IDBFS, {}, '/savestate');
+      var idbfs = (typeof IDBFS !== 'undefined') ? IDBFS : (FS.filesystems ? FS.filesystems.IDBFS : null);
+      if (idbfs) {
+        try {
+          FS.mkdir('/savestate');
+        } catch(e) {}
+        FS.mount(idbfs, {}, '/savestate');
+      } else {
+        console.error("IDBFS library not available.");
+      }
     });
     filesystemMounted = true;
   }
