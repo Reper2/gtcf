@@ -40,16 +40,12 @@ jobs:
           sudo apt-get install -y cmake build-essential libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libgl1-mesa-dev
 
       # --- Windows Toolchain Setup (MinGW GCC & Ninja) ---
-      - name: Setup Windows Compiler Environment
-        if: runner.os == 'Windows'
-        uses: egor-tisin/setup-ninja@v1
-
       - name: Configure MinGW Package Engine
         if: runner.os == 'Windows'
         uses: msys2/setup-msys2@v2
         with:
           mingw64: true
-          install: mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake
+          install: mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake mingw-w64-x86_64-ninja
 
       # --- CMake Build Step ---
       # Forces Windows runner to use the MinGW Ninja generator instead of MSVC

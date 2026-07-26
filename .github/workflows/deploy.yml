@@ -36,10 +36,10 @@ jobs:
           mkdir build-web
           cd build-web
           
-          # Use emcmake to configure CMake using Emscripten toolchain
-          emcmake cmake .. -DCMAKE_BUILD_TYPE=Release
+          # Force Raylib to build for Web/Emscripten platform
+          emcmake cmake .. -DCMAKE_BUILD_TYPE=Release -DPLATFORM=Web
           
-          # Build the project (generates build-web/index.html via shell.html)
+          # Build the project
           cmake --build .
 
       # Upload the compiled web files as a Pages artifact
