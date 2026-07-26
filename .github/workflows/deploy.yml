@@ -3,7 +3,7 @@ name: Build and Deploy WASM to GitHub Pages
 on:
   push:
     branches:
-      - main  # Runs automatically whenever you push to main
+      - master  # Runs automatically whenever you push to main
 
 permissions:
   contents: read
