@@ -1,14 +1,16 @@
 cmake_minimum_required(VERSION 3.14)
+
+# Force CMake policy compatibility for Raylib
+set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
+
 project(GrandTourColdFront CXX C)
 
-set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# --- Automatically Fetch Raylib if Not Found ---
+# --- Fetch Raylib (Shallow Clone) ---
 include(FetchContent)
 
-# Set Raylib build options before fetching
 set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(BUILD_GAMES    OFF CACHE BOOL "" FORCE)
 
@@ -18,26 +20,29 @@ FetchContent_Declare(
     GIT_TAG        5.0
     GIT_SHALLOW    TRUE
 )
-FetchContent_MakeAvailable(raylib)
 
-# 2. Add source files
+# Populate Raylib and explicitly capture its source directory variable
+FetchContent_MakeAvailable(raylib)
+FetchContent_GetProperties(raylib SOURCE_DIR raylib_SOURCE_DIR)
+
+# --- Define Executable Target ---
 add_executable(GrandTourColdFront
-    src/projectile.cpp
-    src/spaceship.cpp
-    src/penguin.cpp
     src/main.cpp
-    src/key_input.cpp
-    src/globals.cpp
-    src/colours.cpp
-    src/backgrounds.cpp
+    src/spaceship.cpp
+    src/projectile.cpp
+    src/penguin.cpp
     src/alien.cpp
 )
 
-# Native Desktop Link Options (macOS, Windows, Linux)
-if(NOT EMSCRIPTEN)
-    # Link native raylib and standard system libraries
-    target_link_libraries(GrandTourColdFront PRIVATE raylib)
-endif()
+# --- Include Directories & Linking ---
+target_include_directories(GrandTourColdFront PRIVATE 
+    ${raylib_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/headers
+)
+
+# Linking to raylib automatically passes its public include headers down
+target_link_libraries(GrandTourColdFront PRIVATE raylib)
 
 # Web / Emscripten Specific Settings
 if(EMSCRIPTEN)
