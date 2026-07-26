@@ -48,7 +48,7 @@ int GetRandomBackgroundIndex() noexcept {
 // Stitches the full file path string together for Raylib's asset loader
 const char* GetBackgroundFilePath(const int index) noexcept {
     if (index < 0 || index >= static_cast<int>(BACKGROUND_IMAGES.size())) {
-        return TextFormat("%s%.*s_c.jpg", IMAGE_URL.c_str(), (int)BACKGROUND_IMAGES[0].length(), BACKGROUND_IMAGES[0].data());
+        return TextFormat("%s%.*s_c.png", IMAGE_URL.c_str(), (int)BACKGROUND_IMAGES[0].length(), BACKGROUND_IMAGES[0].data());
     }
-    return TextFormat("%s%.*s_c.jpg", IMAGE_URL.c_str(), (int)BACKGROUND_IMAGES[index].length(), BACKGROUND_IMAGES[index].data());
+    return TextFormat("%s%.*s_c.png", IMAGE_URL.c_str(), (int)BACKGROUND_IMAGES[index].length(), BACKGROUND_IMAGES[index].data());
 }
