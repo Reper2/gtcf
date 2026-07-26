@@ -3,6 +3,9 @@ project(GrandTourColdFront CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 
+# Generate compile_commands.json for VS Code IntelliSense
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # 1. Fetch Raylib automatically if it's not found locally
 find_package(raylib 5.0 QUIET)
 if(NOT raylib_FOUND)
