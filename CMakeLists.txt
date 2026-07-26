@@ -36,7 +36,6 @@ target_include_directories(GrandTourColdFront PRIVATE
 
 # 3. Web/Emscripten settings
 if(EMSCRIPTEN)
-    # Output file will be index.html (alongside index.js and index.wasm)
     set_target_properties(GrandTourColdFront PROPERTIES OUTPUT_NAME "index")
     
     target_link_options(GrandTourColdFront PRIVATE
@@ -44,7 +43,7 @@ if(EMSCRIPTEN)
         "-sWASM=1"
         "-sALLOW_MEMORY_GROWTH=1"
         "-sFORCE_FILESYSTEM=1"
-        "-sIDBFS=1"
+        "-lidbfs.js"  # IndexedDB support
         "--shell-file" "${CMAKE_CURRENT_SOURCE_DIR}/web/shell.html"
         "--preload-file" "${CMAKE_CURRENT_SOURCE_DIR}/resources@/resources"
     )
