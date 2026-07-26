@@ -38,7 +38,7 @@ void LoadHighScore()
   if (!filesystemMounted)
   {
     EM_ASM({
-      var idbfs = (typeof IDBFS != = 'undefined') ? IDBFS : (FS.filesystems ? FS.filesystems.IDBFS : null);
+      var idbfs = (typeof IDBFS !== 'undefined') ? IDBFS : (FS.filesystems ? FS.filesystems.IDBFS : null);
       if (idbfs)
       {
         try
