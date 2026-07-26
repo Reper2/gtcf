@@ -38,7 +38,7 @@ void LoadHighScore()
   if (!filesystemMounted)
   {
     EM_ASM({
-      var idbfs = (typeof IDBFS !== 'undefined') ? IDBFS : (FS.filesystems ? FS.filesystems.IDBFS : null);
+      var idbfs = (typeof IDBFS != = 'undefined') ? IDBFS : (FS.filesystems ? FS.filesystems.IDBFS : null);
       if (idbfs)
       {
         try
@@ -265,6 +265,10 @@ int main()
   while (!WindowShouldClose())
   {
     frameCount++;
+    float dt = GetFrameTime();
+    if (dt > 0.1f) {
+      dt = 0.1f;
+    }
 
     if (IsWindowResized())
     {
