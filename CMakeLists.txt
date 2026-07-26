@@ -36,14 +36,16 @@ target_include_directories(GrandTourColdFront PRIVATE
 
 # 3. Web/Emscripten settings
 if(EMSCRIPTEN)
-    set_target_properties(GrandTourColdFront PROPERTIES OUTPUT_NAME "index")
+    set_target_properties(GrandTourColdFront PROPERTIES 
+        OUTPUT_NAME "index"
+        SUFFIX ".html"
+    )
     
     target_link_options(GrandTourColdFront PRIVATE
         "-sUSE_GLFW=3"
         "-sWASM=1"
         "-sALLOW_MEMORY_GROWTH=1"
         "-sFORCE_FILESYSTEM=1"
-        "-lidbfs.js"  # IndexedDB support
         "--shell-file" "${CMAKE_CURRENT_SOURCE_DIR}/web/shell.html"
         "--preload-file" "${CMAKE_CURRENT_SOURCE_DIR}/resources@/resources"
     )

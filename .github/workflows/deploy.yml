@@ -45,10 +45,26 @@ jobs:
       - name: Stage Web Files for Deployment
         run: |
           mkdir -p ./dist
-          cp build-web/index.html ./dist/
-          cp build-web/index.js ./dist/
-          cp build-web/index.wasm ./dist/
-          cp build-web/index.data ./dist/ || true
+          
+          # 1. Copy generated WebAssembly build output
+          cp build-web/*.html ./dist/ 2>/dev/null || true
+          cp build-web/*.js ./dist/ 2>/dev/null || true
+          cp build-web/*.wasm ./dist/ 2>/dev/null || true
+          cp build-web/*.data ./dist/ 2>/dev/null || true
+
+          # 2. Rename executable HTML to index.html if needed
+          if [ -f ./dist/GrandTourColdFront.html ] && [ ! -f ./dist/index.html ]; then
+            mv ./dist/GrandTourColdFront.html ./dist/index.html
+          fi
+
+          # 3. Copy static web folder (icons, manifest, etc.) into ./dist/web/
+          if [ -d "web" ]; then
+            cp -r web ./dist/
+          fi
+
+          # Debug: print out directory contents to verify structure
+          ls -la ./dist
+          ls -la ./dist/web
 
       # Upload the clean web files as a Pages artifact
       - name: Upload Pages Artifact
