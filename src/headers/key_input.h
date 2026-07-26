@@ -10,6 +10,7 @@
 
 #pragma once
 #include <string>
+#include <array>
 
 #include "penguin.h"
 #include "spaceship.h"

@@ -9,10 +9,9 @@
 
 
 #pragma once
-#include "raylib.h"
-#include "penguin.h"
 #include <vector>
 #include <array>
+#include "penguin.h"
 
 class Spaceship
 {

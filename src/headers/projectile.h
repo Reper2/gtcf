@@ -9,7 +9,6 @@
 
 
 #pragma once
-#include <raylib.h>
 #include <string>
 
 class Alien; // Forward declaration

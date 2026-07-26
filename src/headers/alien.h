@@ -9,10 +9,8 @@
 
 
 #pragma once
-#include <raylib.h>
 #include <vector>
 #include <string>
-
 #include "spaceship.h"
 
 class Alien

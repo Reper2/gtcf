@@ -9,7 +9,7 @@
 
 
 #pragma once
-#include "raylib.h"
+#include <raylib.h>
 #include <array>
 
 extern const Color CYAN;
