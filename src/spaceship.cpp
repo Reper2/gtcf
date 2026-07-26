@@ -103,11 +103,11 @@ void Spaceship::displayPilot() const noexcept
 
 void Spaceship::displayFins() const noexcept
 {
-  constexpr static const Vector2 topFin[] = {{-30.0f, -60.0f}, {-75.0f, -5.0f}, {-30.0f, 0.0f}};
-  constexpr static const Vector2 bottomFin[] = {{-30.0f, 0.0f}, {-75.0f, 5.0f}, {-30.0f, 60.0f}};
+  static Vector2 topFin[] = {{-30.0f, -60.0f}, {-75.0f, -5.0f}, {-30.0f, 0.0f}};
+  static Vector2 bottomFin[] = {{-30.0f, 0.0f}, {-75.0f, 5.0f}, {-30.0f, 60.0f}};
 
-  DrawTriangleFan((Vector2 *)topFin, 3, colour[1]);
-  DrawTriangleFan((Vector2 *)bottomFin, 3, colour[1]);
+  DrawTriangleFan(topFin, 3, colour[1]);
+  DrawTriangleFan(bottomFin, 3, colour[1]);
 }
 
 void Spaceship::displayLogo() const noexcept
@@ -143,7 +143,7 @@ void Spaceship::displayLogo() const noexcept
   DrawCircleSector({0.0f, 0.0f}, 1.0f, 0.0f, 180.0f, 24, colour[0]);
   rlPopMatrix();
 
-  constexpr Vector2 beakPoints[] = {
+  Vector2 beakPoints[] = {
       {0.0f, baseY - triTipHeight},
       {-triWidthHalf, baseY},
       {triWidthHalf, baseY}};
@@ -209,8 +209,8 @@ void Spaceship::displayEngines() const noexcept
 void Spaceship::displayHull() const noexcept
 {
   // Nose Cone
-  constexpr Vector2 nose[] = {{110.0f, 0.0f}, {40.0f, -20.0f}, {50.0f, 20.0f}};
-  DrawTriangleFan((Vector2 *)nose, 3, colour[1]);
+  Vector2 nose[] = {{110.0f, 0.0f}, {40.0f, -20.0f}, {50.0f, 20.0f}};
+  DrawTriangleFan(nose, 3, colour[1]);
 
   // Main Hull Capsule
   DrawEllipse(0, 0, 140.0f / 2.0f, 58.0f / 2.0f, colour[0]);
@@ -290,23 +290,14 @@ void Spaceship::TrailParticle::display() noexcept
   Color renderColor = particleColor;
   renderColor.a = (unsigned char)std::clamp(alpha, 0.0f, 255.0f);
 
-  // =================================================================
-  // CUSTOMISATION VARIABLE
-  // Change this number to instantly change the star style!
-  // 4 = Classic 4-pointed star (8 segments)
-  // 5 = Traditional 5-pointed star (10 segments)
-  // 12 = Complex spiked badge/sunburst (24 segments)
-  // =================================================================
   constexpr unsigned starPoints = 7;
   constexpr unsigned totalSegments = starPoints * 2;
 
-  // Loop dynamically scales to the total segments needed
   for (unsigned i = 0; i < totalSegments; i++)
   {
     const float angle1 = (((2.0f * PI) / (float)totalSegments) * (float)i) + rotation;
     const float angle2 = (((2.0f * PI) / (float)totalSegments) * (float)(i + 1)) + rotation;
 
-    // The alternating inner/outer radius check automatically scales
     const float radius1 = (i % 2 == 0) ? pSize : pSize * 0.4f;
     const float radius2 = ((i + 1) % 2 == 0) ? pSize : pSize * 0.4f;
 
@@ -314,7 +305,6 @@ void Spaceship::TrailParticle::display() noexcept
     const Vector2 pointA = {particleX + cosf(angle1) * radius1, particleY + sinf(angle1) * radius1};
     const Vector2 pointB = {particleX + cosf(angle2) * radius2, particleY + sinf(angle2) * radius2};
 
-    // Maintain the working counter-clockwise rendering order
     DrawTriangle(center, pointB, pointA, renderColor);
   }
 }
