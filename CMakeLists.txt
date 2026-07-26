@@ -27,11 +27,15 @@ FetchContent_GetProperties(raylib SOURCE_DIR raylib_SOURCE_DIR)
 
 # --- Define Executable Target ---
 add_executable(GrandTourColdFront
-    src/main.cpp
-    src/spaceship.cpp
-    src/projectile.cpp
-    src/penguin.cpp
     src/alien.cpp
+    src/backgrounds.cpp
+    src/colours.cpp
+    src/globals.cpp
+    src/key_input.cpp
+    src/main.cpp
+    src/penguin.cpp
+    src/projectile.cpp
+    src/spaceship.cpp
 )
 
 # --- Include Directories & Linking ---
