@@ -105,12 +105,20 @@ jobs:
         run: |
           tar -czvf ${{ matrix.artifact_name }} -C release_stage .
 
-      - name: Archive Release Package (Windows / macOS)
-        if: runner.os != 'Linux'
+      - name: Archive Release Package (macOS)
+        if: runner.os == 'macOS'
         shell: bash
         run: |
           cd release_stage
           zip -r ../${{ matrix.artifact_name }} .
+          cd ..
+
+      - name: Archive Release Package (Windows)
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          cd release_stage
+          7z a -r ../${{ matrix.artifact_name }} .
           cd ..
 
       # --- Upload Artifacts & Generate Automated Changelog ---
