@@ -140,7 +140,7 @@ void spawnSpacePenguins()
 {
   // Scatter fresh penguins across the actual allocated background map dimensions
   constexpr int bgPenguins = 30;
-  for (int i = 0; i < bgPenguins; i++)
+  for (unsigned i = 0; i < bgPenguins; i++)
   {
     const float randX = randomFloat(0, bg.width);
     const float randY = randomFloat(0, bg.height);
@@ -501,16 +501,6 @@ int main()
         alien->display();
       }
 
-      // Remove dead aliens to clear vector memory layout
-      for (int i = allAliens.size() - 1; i >= 0; i--)
-      {
-        if (allAliens[i]->isDead)
-        {
-          delete allAliens[i];                    // Delete the pointer's memory on the heap
-          allAliens.erase(allAliens.begin() + i); // Clear the row slot out of the vector
-        }
-      }
-
       DrawText(TextFormat("SCORE: %d", score), 20, 20, 20, Color{255, 220, 40, 255});
 
       std::string hpShields = "FLEET INTEGRITY: ";
@@ -652,7 +642,7 @@ int main()
 
       // Loop through and draw each legal line centered dynamically
       float startLegalY = boxY + 195.0f;
-      for (int i = 0; i < 5; i++)
+      for (unsigned i = 0; i < 5; i++)
       {
         Vector2 legalMetrics = MeasureTextEx(unicodeFont, legalLines[i], legalSize, legalSpacing);
         Vector2 legalPos = {
@@ -679,11 +669,33 @@ int main()
 
     EndTextureMode(); // Close out internal rendering
 
+    // --- SAFE POST-FRAME MEMORY CLEANUP SWEEP ---
+    // Clean up dead aliens safely after rendering finishes
+    for (int i = (int)allAliens.size() - 1; i >= 0; i--)
+    {
+      if (allAliens[i]->isDead)
+      {
+        delete allAliens[i];
+        allAliens.erase(allAliens.begin() + i);
+      }
+    }
+
+    // Clean up dead projectiles safely after rendering finishes
+    for (int i = (int)projectiles.size() - 1; i >= 0; i--)
+    {
+      if (projectiles[i]->isDead)
+      {
+        delete projectiles[i];
+        projectiles.erase(projectiles.begin() + i);
+      }
+    }
+    // ---------------------------------------------
+
     // Hardware Scaling Step: Draw the target canvas scaled onto the real monitor screen
     BeginDrawing();
-    ClearBackground(BLACK); // Clear letterboxing bars out to clean black
+    ClearBackground(BLACK); 
 
-    UpdateViewportScale(); // Dynamically recalculate dimensions for window scale changes
+    UpdateViewportScale(); 
     DrawTexturePro(targetCanvas.texture, sourceRec, destRec, {0, 0}, 0.0f, WHITE);
 
     EndDrawing();
