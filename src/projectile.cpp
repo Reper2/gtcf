@@ -7,7 +7,6 @@
 // using concepts from the poster including spaceships and exhaust trails.
 // https://www.jpl.nasa.gov/galleries/visions-of-the-future/#grid-127451-1
 
-
 #include <vector>
 #include <array>
 #include <algorithm>
@@ -121,12 +120,14 @@ void Projectile::processGlobalCollisions()
   for (std::size_t i = projectiles.size(); i > 0; --i)
   {
     Projectile *proj = projectiles[i - 1];
-    if (proj == nullptr || proj->isDead) continue;
+    if (proj == nullptr || proj->isDead)
+      continue;
 
     for (std::size_t j = allAliens.size(); j > 0; --j)
     {
       Alien *alien = allAliens[j - 1];
-      if (alien == nullptr || alien->isDead) continue;
+      if (alien == nullptr || alien->isDead)
+        continue;
 
       const Vector2 projPos = {proj->x, proj->y};
       const Vector2 alienPos = {alien->x, alien->y};
@@ -134,7 +135,7 @@ void Projectile::processGlobalCollisions()
 
       if (distance < (38.0f * 38.0f))
       {
-        proj->isDead = true; 
+        proj->isDead = true;
         if (proj->element == "ice")
         {
           alien->state = "FROZEN";
@@ -145,7 +146,8 @@ void Projectile::processGlobalCollisions()
           if (alien->state == "FROZEN")
           {
             score += 100;
-            alien->isDead = true;
+            delete alien;
+            allAliens.erase(allAliens.begin() + (j - 1));
           }
           else
           {
@@ -154,7 +156,8 @@ void Projectile::processGlobalCollisions()
             if (alien->health <= 0)
             {
               score += 250;
-              alien->isDead = true;
+              delete alien;
+              allAliens.erase(allAliens.begin() + (j - 1));
             }
           }
         }
@@ -169,7 +172,8 @@ void Projectile::processGlobalCollisions()
     for (std::size_t i = allAliens.size(); i > 0; --i)
     {
       Alien *alien = allAliens[i - 1];
-      if (alien == nullptr || alien->isDead) continue;
+      if (alien == nullptr || alien->isDead)
+        continue;
 
       const Vector2 alienPos = {alien->x, alien->y};
       bool alienDestroyed = false;
@@ -179,7 +183,8 @@ void Projectile::processGlobalCollisions()
       {
         const std::size_t shipIndex = s - 1;
         Spaceship *ship = allShips[shipIndex];
-        if (ship == nullptr) continue;
+        if (ship == nullptr)
+          continue;
 
         const Vector2 shipPos = {ship->x, ship->y};
         const float distance = Vector2DistanceSqr(shipPos, alienPos);
@@ -196,9 +201,21 @@ void Projectile::processGlobalCollisions()
           {
             if (fleetHealth <= 3)
             {
-              if (ship == redShip)    { redShip = nullptr; redPenguin = nullptr; }
-              if (ship == mainShip)   { mainShip = nullptr; mainPenguin = nullptr; }
-              if (ship == greenShip)  { greenShip = nullptr; greenPenguin = nullptr; }
+              if (ship == redShip)
+              {
+                redShip = nullptr;
+                redPenguin = nullptr;
+              }
+              if (ship == mainShip)
+              {
+                mainShip = nullptr;
+                mainPenguin = nullptr;
+              }
+              if (ship == greenShip)
+              {
+                greenShip = nullptr;
+                greenPenguin = nullptr;
+              }
 
               ship->isDrifting = true;
               deadShips.push_back(ship);
