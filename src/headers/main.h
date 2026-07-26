@@ -9,13 +9,15 @@
 
 
 #pragma once
-#include "raylib.h"
+
 #include <vector>
 #include <string>
 
 class Spaceship;
 
-void changeGameState(std::string newState);
-void resetGame();
+void LoadHighScore();
+void SaveHighScore();
+void ChangeGameState(std::string newState);
 void spawnSpacePenguins();
 void setup();
+void resetGame();

@@ -29,12 +29,13 @@ add_executable(GrandTourColdFront
     src/alien.cpp
 )
 
-target_link_libraries(GrandTourColdFront PRIVATE raylib)
-target_include_directories(GrandTourColdFront PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/headers
-)
+# Native Desktop Link Options (macOS, Windows, Linux)
+if(NOT EMSCRIPTEN)
+    # Link native raylib and standard system libraries
+    target_link_libraries(GrandTourColdFront PRIVATE raylib)
+endif()
 
-# 3. Web/Emscripten settings
+# Web / Emscripten Specific Settings
 if(EMSCRIPTEN)
     set_target_properties(GrandTourColdFront PROPERTIES 
         OUTPUT_NAME "index"
@@ -43,7 +44,8 @@ if(EMSCRIPTEN)
     
     target_link_options(GrandTourColdFront PRIVATE
         "-sUSE_GLFW=3"
-        "-sWASM=1"
+        "-sMAX_WEBGL_VERSION=2"
+        "-sMIN_WEBGL_VERSION=1"
         "-sALLOW_MEMORY_GROWTH=1"
         "-sFORCE_FILESYSTEM=1"
         "-lidbfs.js"

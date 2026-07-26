@@ -38,13 +38,20 @@ void LoadHighScore()
   if (!filesystemMounted)
   {
     EM_ASM({
-      var idbfs = (typeof IDBFS !== 'undefined') ? IDBFS : (FS.filesystems ? FS.filesystems.IDBFS : null);
-      if (idbfs) {
-        try {
+      var idbfs = (typeof IDBFS != = 'undefined') ? IDBFS : (FS.filesystems ? FS.filesystems.IDBFS : null);
+      if (idbfs)
+      {
+        try
+        {
           FS.mkdir('/savestate');
-        } catch(e) {}
+        }
+        catch (e)
+        {
+        }
         FS.mount(idbfs, {}, '/savestate');
-      } else {
+      }
+      else
+      {
         console.error("IDBFS library not available.");
       }
     });
@@ -53,8 +60,7 @@ void LoadHighScore()
 
   EM_ASM({
     FS.syncfs(true, function(err) {
-      if (err) console.error("Error loading save from IndexedDB:", err); 
-    });
+      if (err) console.error("Error loading save from IndexedDB:", err); });
   });
 #endif
 
@@ -225,7 +231,10 @@ int main()
 
   LoadHighScore();
 
+#ifndef __EMSCRIPTEN__
+  // Only generate & write PNGs to disk when running desktop native builds!
   ExportTextures();
+#endif
 
   std::vector<int> codepoints;
   for (unsigned i = 32; i < 127; i++)

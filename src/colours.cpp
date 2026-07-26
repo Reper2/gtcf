@@ -7,9 +7,10 @@
 // using concepts from the poster including spaceships and exhaust trails.
 // https://www.jpl.nasa.gov/galleries/visions-of-the-future/#grid-127451-1
 
-#include <raylib.h>
+#include <string>
 #include <vector>
 #include <array>
+#include <raylib.h>
 #include "headers/colours.h"
 
 constexpr Color CYAN = {0, 255, 255, 255};
@@ -74,7 +75,7 @@ constexpr Color iceFill = {110, 210, 255, 140};     // Semi-transparent icy blue
 constexpr Color iceStroke = {220, 245, 255, 220};   // Bright ice border
 constexpr Color glareColour = {255, 255, 255, 100}; // White glare streak
 
-const std::vector<std::pair<std::string, Color>> colourMap = {
+inline const std::vector<std::pair<std::string, Color>> colourMap = {
     {"blue", blueRGBA},
     {"red", redRGBA},
     {"green", greenRGBA},
@@ -85,7 +86,7 @@ const std::vector<std::pair<std::string, Color>> colourMap = {
     {"emerald", starBitPalette[3]},
     {"purple", starBitPalette[4]},
     {"silver", starBitPalette[5]}};
-const std::vector<std::pair<std::string, std::array<Color, 4>>> shipColourMap = {
+inline const std::vector<std::pair<std::string, std::array<Color, 4>>> shipColourMap = {
     {"grandTour", grandTourStyle},
     {"enceledus", enceledusStyle},
     {"marsPioneer", marsPioneerStyle}};
