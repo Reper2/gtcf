@@ -3,7 +3,7 @@ name: Build and Deploy WASM to GitHub Pages
 on:
   push:
     branches:
-      - master  # Runs automatically whenever you push to main
+      - master
 
 permissions:
   contents: read
@@ -42,11 +42,19 @@ jobs:
           # Build the project
           cmake --build .
 
-      # Upload the compiled web files as a Pages artifact
+      - name: Stage Web Files for Deployment
+        run: |
+          mkdir -p ./dist
+          cp build-web/index.html ./dist/
+          cp build-web/index.js ./dist/
+          cp build-web/index.wasm ./dist/
+          cp build-web/index.data ./dist/ || true
+
+      # Upload the clean web files as a Pages artifact
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./build-web
+          path: ./dist
 
   deploy:
     needs: build
