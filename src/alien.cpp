@@ -49,7 +49,7 @@ void Alien::drawFreezeOverlay() const noexcept
   {
     const Rectangle iceBlock = {0.0f - (46.0f / 2.0f), 0.0f - (40.0f / 2.0f), 46.0f, 40.0f};
     DrawRectangleRounded(iceBlock, 0.3f, 4, iceFill);
-    DrawRectangleRoundedLines(iceBlock, 0.3f, 4, iceStroke);
+    DrawRectangleRoundedLines(iceBlock, 0.3f, 4, 2.0f, iceStroke);
 
     Vector2 glarePoints[] = {
         {-15.0f, 10.0f}, {-5.0f, -15.0f}, {0.0f, -15.0f}, {-10.0f, 10.0f}};
