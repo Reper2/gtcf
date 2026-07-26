@@ -1,0 +1,60 @@
+name: Build and Deploy WASM to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # Runs automatically whenever you push to main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Emscripten SDK
+        uses: mymindstorm/setup-emsdk@v14
+        with:
+          version: '3.1.50'
+
+      - name: Install Build Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake build-essential
+
+      - name: Compile to WebAssembly with CMake
+        run: |
+          mkdir build-web
+          cd build-web
+          
+          # Use emcmake to configure CMake using Emscripten toolchain
+          emcmake cmake .. -DCMAKE_BUILD_TYPE=Release
+          
+          # Build the project (generates build-web/index.html via shell.html)
+          cmake --build .
+
+      # Upload the compiled web files as a Pages artifact
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./build-web
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
