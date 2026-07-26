@@ -39,14 +39,16 @@ void LoadHighScore()
   {
     EM_ASM({
       FS.mkdir('/savestate');
-      FS.mount(IDBFS, {}, '/savestate');
+      // Use FS.filesystems.IDBFS instead of just IDBFS
+      FS.mount(FS.filesystems.IDBFS, {}, '/savestate');
     });
     filesystemMounted = true;
   }
 
   EM_ASM({
     FS.syncfs(true, function(err) {
-      if (err) console.error("Error loading save from IndexedDB:", err); });
+      if (err) console.error("Error loading save from IndexedDB:", err); 
+    });
   });
 #endif
 
