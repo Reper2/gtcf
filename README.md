@@ -41,6 +41,9 @@ The project's grading originally applied conditional penalties because the marke
 With a more flexible evaluation scheme across all criteria, I believe my work demonstrated a level of mastery closer to 95%. The primary deduction occurred during the Programming Skills Demonstration test, where I lost 5 marks for "code comprehension." In this task, I accidentally added a duplicate if condition directly below an existing if block inside void keyPressed(). Although the logic executed as intended and successfully met all functional requirements, the inclusion of the redundant condition resulted in receiving zero marks for that specific question.
 
 # Manual
+## macOS Installation Note: > Because this build is not signed with an Apple Developer certificate, macOS Gatekeeper may block it on first launch.
+To open the game: Right-click GrandTourColdFront → Click "Open" → Click "Open" again.
+
 * Use <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>, arrow keys or touch the screen to move the ships through space
 - *Note: Once the main ship dies, you cannot move the ships*
 * Use <kbd>Z</kbd> to shoot a Fireball in the direction of your mouse position from the nose of the ships
