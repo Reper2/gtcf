@@ -8,11 +8,14 @@
 // https://www.jpl.nasa.gov/galleries/visions-of-the-future/#grid-127451-1
 
 
-#include <raylib.h>
 #include <vector>
 #include <array>
 #include <algorithm>
+#include <cmath>
+
+#include <raylib.h>
 #include "rlgl.h"
+#include <raymath.h>
 
 #include "headers/spaceship.h"
 #include "headers/globals.h"
@@ -302,8 +305,8 @@ void Spaceship::TrailParticle::display() noexcept
     const float radius2 = ((i + 1) % 2 == 0) ? pSize : pSize * 0.4f;
 
     const Vector2 center = {particleX, particleY};
-    const Vector2 pointA = {particleX + cosf(angle1) * radius1, particleY + sinf(angle1) * radius1};
-    const Vector2 pointB = {particleX + cosf(angle2) * radius2, particleY + sinf(angle2) * radius2};
+    const Vector2 pointA = {particleX + std::cos(angle1) * radius1, particleY + std::sin(angle1) * radius1};
+    const Vector2 pointB = {particleX + std::cos(angle2) * radius2, particleY + std::sin(angle2) * radius2};
 
     DrawTriangle(center, pointB, pointA, renderColor);
   }

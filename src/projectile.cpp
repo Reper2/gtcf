@@ -8,12 +8,14 @@
 // https://www.jpl.nasa.gov/galleries/visions-of-the-future/#grid-127451-1
 
 
-#include <raylib.h>
 #include <vector>
 #include <array>
 #include <algorithm>
+#include <cmath>
+
+#include <raylib.h>
 #include "rlgl.h"
-#include "raymath.h"
+#include <raymath.h>
 
 #include "headers/globals.h"
 #include "headers/projectile.h"
@@ -33,8 +35,8 @@ Projectile::Projectile(float startX, float startY, float targetX, float targetY,
   const float angle = atan2(targetY - startY, targetX - startX);
 
   // Break down the speed into x and y components based on the angle
-  vertexX = cos(angle) * speed;
-  vertexY = sin(angle) * speed;
+  vertexX = std::cos(angle) * speed;
+  vertexY = std::sin(angle) * speed;
 }
 
 void Projectile::update() noexcept
