@@ -1,21 +1,20 @@
 cmake_minimum_required(VERSION 3.20)
+cmake_policy(SET CMP0135 NEW)
+
 project(GrandTourColdFront CXX)
 
+set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 set(CMAKE_CXX_STANDARD 17)
 
 # Generate compile_commands.json for VS Code IntelliSense
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# 1. Fetch Raylib automatically if it's not found locally
-find_package(raylib 5.0 QUIET)
-if(NOT raylib_FOUND)
-    include(FetchContent)
-    FetchContent_Declare(
-        raylib
-        URL https://github.com/raysan5/raylib/archive/refs/tags/5.0.tar.gz
-    )
-    FetchContent_MakeAvailable(raylib)
-endif()
+include(FetchContent)
+FetchContent_Declare(
+    raylib
+    URL https://github.com/raysan5/raylib/archive/refs/tags/5.0.tar.gz
+)
+FetchContent_MakeAvailable(raylib)
 
 # 2. Add source files
 add_executable(GrandTourColdFront

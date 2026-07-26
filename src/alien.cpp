@@ -7,12 +7,14 @@
 // using concepts from the poster including spaceships and exhaust trails.
 // https://www.jpl.nasa.gov/galleries/visions-of-the-future/#grid-127451-1
 
-#include <raylib.h>
-#include "raymath.h"
-#include <rlgl.h>
-#include <vector>
 #include <string>
+#include <vector>
 #include <limits>
+
+#include <raylib.h>
+#include <rlgl.h>
+#include <raymath.h>
+
 #include "headers/alien.h"
 #include "headers/colours.h"
 #include "headers/globals.h"
@@ -47,7 +49,7 @@ void Alien::drawFreezeOverlay() const noexcept
   {
     const Rectangle iceBlock = {0.0f - (46.0f / 2.0f), 0.0f - (40.0f / 2.0f), 46.0f, 40.0f};
     DrawRectangleRounded(iceBlock, 0.3f, 4, iceFill);
-    DrawRectangleRoundedLinesEx(iceBlock, 0.3f, 4, 2.0f, iceStroke);
+    DrawRectangleRoundedLines(iceBlock, 0.3f, 4, iceStroke);
 
     Vector2 glarePoints[] = {
         {-15.0f, 10.0f}, {-5.0f, -15.0f}, {0.0f, -15.0f}, {-10.0f, 10.0f}};
