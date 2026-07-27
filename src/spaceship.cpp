@@ -265,6 +265,38 @@ void Spaceship::display() noexcept
   rlPopMatrix(); // Exit Spaceship Matrix
 }
 
+void Spaceship::moveX(const float dx, const float virtualWidth, float &bgX, const Texture2D bg) noexcept
+{
+  const float size = 100.0f * scaleFact;
+  const bool canScroll = (dx < 0.0f && bgX < 0.0f) || (dx > 0.0f && bgX > virtualWidth - bg.width);
+
+  if (canScroll)
+  {
+    bgX -= dx;
+  }
+  else
+  {
+    x += dx;
+    x = std::clamp(x, size / 2.0f, virtualWidth - (size / 2.0f));
+  }
+}
+
+void Spaceship::moveY(const float dy, const float virtualHeight, float &bgY, const Texture2D bg) noexcept
+{
+  const float size = 180.0f * scaleFact;
+  const bool canScroll = (dy < 0.0f && bgY < 0.0f) || (dy > 0.0f && bgY > virtualHeight - bg.height);
+
+  if (canScroll)
+  {
+    bgY -= dy;
+  }
+  else
+  {
+    y += dy;
+    y = std::clamp(y, size / 2.0f, virtualHeight - (size / 2.0f));
+  }
+}
+
 // Spaceship exhaust trail construction
 Spaceship::TrailParticle::TrailParticle(float startX, float startY) noexcept
     : particleX(startX), particleY(startY)

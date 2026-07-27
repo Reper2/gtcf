@@ -77,8 +77,8 @@ public:
 
   // Methods
   void update() noexcept;
-  void moveX(const float dx, const float virtualWidth, float &bgX, const Texture2D bg) noexcept;
-  void moveY(const float dy, const float virtualHeight, float &bgY, const Texture2D bg) noexcept;
+  // void moveX(const float dx, const float virtualWidth, float &bgX, const Texture2D bg) noexcept;
+  // void moveY(const float dy, const float virtualHeight, float &bgY, const Texture2D bg) noexcept;
   void display() noexcept;
   void displayBody() noexcept;
 };

@@ -2,28 +2,19 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build debug",
-            "type": "shell",
-            "command": "clang++",
-            "args": [
-                "src/*.cpp",
-                "-o",
-                "GrandTourColdFront",
-                "-I/opt/homebrew/include",
-                "-L/opt/homebrew/lib",
-                "-lraylib",
-                "-framework", "OpenGL",
-                "-framework", "Cocoa",
-                "-framework", "IOKit",
-                "-framework", "CoreVideo",
-                "-std=c++17",
-                "-g"
+            "label": "CMake: build",
+            "type": "cmake",
+            "command": "build",
+            "targets": [
+                "all"
             ],
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
-            "problemMatcher": ["$gcc"]
+            "problemMatcher": [
+                "$gcc"
+            ]
         }
     ]
 }

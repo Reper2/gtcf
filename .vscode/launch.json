@@ -5,14 +5,15 @@
       "name": "Debug (Mac Native)",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/GrandTourColdFront",
+      // Points directly to the artifact output folder managed by CMake
+      "program": "${workspaceFolder}/build/GrandTourColdFront",
       "args": [],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
       "environment": [],
       "externalConsole": false,
       "MIMode": "lldb",
-      "preLaunchTask": "build debug"
+      "preLaunchTask": "CMake: build" // Leverages the new unified build task
     },
     {
       "name": "Debug (Windows/Linux GDB)",
@@ -39,7 +40,7 @@
       "linux": {
         "miDebuggerPath": "/usr/bin/gdb"
       },
-      "preLaunchTask": "build debug"
+      "preLaunchTask": "CMake: build" // Keeps cross-platform builds unified
     }
   ]
 }

@@ -217,34 +217,42 @@ void Penguin::Head::displayBeak(int alpha) noexcept
   DrawTriangleFan((Vector2 *)beakPoints, 3, yellowBeak);
 }
 
-void Penguin::moveX(const float dx, const float virtualWidth, float &bgX, const Texture2D bg) noexcept
-{
-  const float multiplier = (slideAngle != 0) ? 2.0f : 1.0f;
-  const float moveStep = dx * multiplier;
-  const float size = 100.0f * scaleFact;
-  const bool canScroll = (moveStep < 0 && bgX < 0) || (moveStep > 0 && bgX > virtualWidth - bg.width);
+// void Penguin::moveX(const float dx, const float virtualWidth, float &bgX, const Texture2D bg) noexcept
+// {
+//   const float multiplier = (slideAngle != 0) ? 2.0f : 1.0f;
+//   const float moveStep = dx * multiplier;
+//   const float size = 100.0f * scaleFact;
+  
+//   // Check if background scrolling is still valid
+//   const bool canScroll = (moveStep < 0 && bgX < 0) || (moveStep > 0 && bgX > virtualWidth - bg.width);
 
-  if (canScroll)
-  {
-    bgX -= moveStep;
-  }
-  else if (x + moveStep > size / 2.0f && x + moveStep < virtualWidth - size / 2.0f)
-  {
-    x += moveStep;
-  }
-}
+//   if (canScroll)
+//   {
+//     bgX -= moveStep;
+//   }
+//   else
+//   {
+//     // Apply movement, then clamp tightly within screen boundaries so it can never exit view
+//     x += moveStep;
+//     x = std::clamp(x, size / 2.0f, virtualWidth - (size / 2.0f));
+//   }
+// }
 
-void Penguin::moveY(const float dy, const float virtualHeight, float &bgY, const Texture2D bg) noexcept
-{
-  const float size = 180.0f * scaleFact;
-  const bool canScroll = (dy < 0 && bgY < 0) || (dy > 0 && bgY > virtualHeight - bg.height);
+// void Penguin::moveY(const float dy, const float virtualHeight, float &bgY, const Texture2D bg) noexcept
+// {
+//   const float size = 180.0f * scaleFact;
+  
+//   // Check if background scrolling is still valid
+//   const bool canScroll = (dy < 0 && bgY < 0) || (dy > 0 && bgY > virtualHeight - bg.height);
 
-  if (canScroll)
-  {
-    bgY -= dy;
-  }
-  else if (y + dy > size / 2.0f && y + dy < virtualHeight - size / 2.0f)
-  {
-    y += dy;
-  }
-}
+//   if (canScroll)
+//   {
+//     bgY -= dy;
+//   }
+//   else
+//   {
+//     // Apply movement, then clamp tightly within vertical screen bounds
+//     y += dy;
+//     y = std::clamp(y, size / 2.0f, virtualHeight - (size / 2.0f));
+//   }
+// }

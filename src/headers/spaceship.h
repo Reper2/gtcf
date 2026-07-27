@@ -7,7 +7,6 @@
 // using concepts from the poster including spaceships and exhaust trails.
 // https://www.jpl.nasa.gov/galleries/visions-of-the-future/#grid-127451-1
 
-
 #pragma once
 #include <array>
 #include <vector>
@@ -56,6 +55,8 @@ public:
 
   void update();
   void display() noexcept;
+  void moveX(const float dx, const float virtualWidth, float &bgX, const Texture2D bg) noexcept;
+  void moveY(const float dy, const float virtualHeight, float &bgY, const Texture2D bg) noexcept;
 
 private:
   // Display helper pipeline

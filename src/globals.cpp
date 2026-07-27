@@ -36,12 +36,12 @@
 
 template <typename Entity, typename... Args>
 void ExportEntityTexture(
-    const char* filename,
+    const char *filename,
     int canvasWidth,
     int canvasHeight,
     float spawnX,
     float spawnY,
-    Args&&... args)
+    Args &&...args)
 {
   RenderTexture2D canvas = LoadRenderTexture(canvasWidth, canvasHeight);
 
@@ -217,7 +217,7 @@ void InitViewport()
   UpdateViewportScale();
 }
 
-float viewportZoom = 1.0f; 
+float viewportZoom = 1.0f;
 
 void UpdateViewportScale() noexcept
 {
@@ -235,26 +235,26 @@ void UpdateViewportScale() noexcept
 
 void HandleMobilePinchZoom() noexcept
 {
-    // Check if any pinch gesture is currently active
-    int gesture = GetGestureDetected();
-    if ((gesture & (GESTURE_PINCH_IN | GESTURE_PINCH_OUT)) != 0)
+  // Check if any pinch gesture is currently active
+  int gesture = GetGestureDetected();
+  if ((gesture & (GESTURE_PINCH_IN | GESTURE_PINCH_OUT)) != 0)
+  {
+    // Get the scale vector change (x represents the scale ratio)
+    Vector2 pinchVector = GetGesturePinchVector();
+    float pinchZoomFactor = pinchVector.x;
+
+    // Raylib returns 0.0f when the pinch is reset or inactive
+    if (pinchZoomFactor > 0.0f)
     {
-        // Get the scale vector change (x represents the scale ratio)
-        Vector2 pinchVector = GetGesturePinchVector();
-        float pinchZoomFactor = pinchVector.x;
-        
-        // Raylib returns 0.0f when the pinch is reset or inactive
-        if (pinchZoomFactor > 0.0f)
-        {
-            viewportZoom *= pinchZoomFactor;
-            
-            // Clamp the zoom boundaries
-            viewportZoom = std::clamp(viewportZoom, 0.5f, 2.5f);
-            
-            // Immediately update screen scaling metrics
-            UpdateViewportScale();
-        }
+      viewportZoom *= pinchZoomFactor;
+
+      // Clamp the zoom boundaries
+      viewportZoom = std::clamp(viewportZoom, 0.4f, 2.5f);
+
+      // Immediately update screen scaling metrics
+      UpdateViewportScale();
     }
+  }
 }
 
 void UnloadViewport() noexcept
@@ -313,7 +313,7 @@ void ExportTextures()
 
     ExportEntityTexture<Projectile>(
         filepath.c_str(),
-        64, 64,     // Small canvas size (128x128 fits the ~26px radius projectile easily)
+        64, 64,       // Small canvas size (128x128 fits the ~26px radius projectile easily)
         32.0f, 32.0f, // Center at (64, 64) so it's perfectly framed
         32.0f, 32.0f, // Target X/Y (matches startX/startY so angle is 0)
         type          // Passed directly as the const std::string& type parameter
@@ -355,7 +355,8 @@ bool ActionPressed(InputAction action)
   {
     for (KeyboardKey key : it->second)
     {
-      if (IsKeyDown(key)) return true;
+      if (IsKeyDown(key))
+        return true;
     }
   }
 
@@ -380,17 +381,24 @@ bool ActionPressed(InputAction action)
     if (virtX < (virtualWidth * 0.45f))
     {
       // Left Virtual D-Pad zones
-      if (action == ACTION_UP && virtY < (virtualHeight * 0.4f)) return true;
-      if (action == ACTION_DOWN && virtY > (virtualHeight * 0.6f)) return true;
-      if (action == ACTION_LEFT && virtX < (virtualWidth * 0.2f)) return true;
-      if (action == ACTION_RIGHT && virtX >= (virtualWidth * 0.2f) && virtX < (virtualWidth * 0.45f)) return true;
+      if (action == ACTION_UP && virtY < (virtualHeight * 0.4f))
+        return true;
+      if (action == ACTION_DOWN && virtY > (virtualHeight * 0.6f))
+        return true;
+      if (action == ACTION_LEFT && virtX < (virtualWidth * 0.2f))
+        return true;
+      if (action == ACTION_RIGHT && virtX >= (virtualWidth * 0.2f) && virtX < (virtualWidth * 0.45f))
+        return true;
     }
     else if (virtX > (virtualWidth * 0.55f))
     {
       // Right Action zones (Fire / Ice / Launch)
-      if (action == ACTION_FIRE && virtY < (virtualHeight * 0.5f)) return true;
-      if (action == ACTION_ICE && virtY >= (virtualHeight * 0.5f)) return true;
-      if (action == ACTION_LAUNCH) return true;
+      if (action == ACTION_FIRE && virtY < (virtualHeight * 0.5f))
+        return true;
+      if (action == ACTION_ICE && virtY >= (virtualHeight * 0.5f))
+        return true;
+      if (action == ACTION_LAUNCH)
+        return true;
     }
   }
   return false;
