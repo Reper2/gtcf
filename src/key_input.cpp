@@ -7,6 +7,8 @@
 // using concepts from the poster including spaceships and exhaust trails.
 // https://www.jpl.nasa.gov/galleries/visions-of-the-future/#grid-127451-1
 
+
+#include <algorithm>
 #include <array>
 #include <cmath>
 #include <string>
