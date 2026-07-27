@@ -9,11 +9,11 @@
 
 
 #pragma once
-#include <raylib.h>
-#include <vector>
 #include <array>
 #include <string>
 #include <type_traits>
+#include <vector>
+#include <raylib.h>
 
 // Forward declarations so the header recognises the types before they fully parse
 class Penguin;
@@ -47,6 +47,7 @@ extern bool isGameOver;
 // --- SCREEN CONSTRAINTS ---
 extern const unsigned virtualWidth;
 extern const unsigned virtualHeight;
+extern float viewportZoom;
 
 // --- DYNAMIC GAME OBJECT LISTS ---
 extern std::vector<Penguin> spacePenguins;
@@ -122,6 +123,7 @@ extern Rectangle destRec;
 
 void InitViewport();
 void UpdateViewportScale() noexcept;
+void HandleMobilePinchZoom() noexcept;
 void UnloadViewport() noexcept;
 
 void ExportTextures();

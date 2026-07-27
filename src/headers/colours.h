@@ -9,8 +9,9 @@
 
 
 #pragma once
-#include <raylib.h>
 #include <array>
+#include <vector>
+#include <raylib.h>
 
 extern const Color CYAN;
 extern const Color TEAL;

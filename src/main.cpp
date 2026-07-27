@@ -7,29 +7,31 @@
 // using concepts from the poster including spaceships and exhaust trails.
 // https://www.jpl.nasa.gov/galleries/visions-of-the-future/#grid-127451-1
 
-#include <raylib.h>
-#include <vector>
-#include <array>
-#include <string>
 #include <algorithm>
+#include <array>
+#include <vector>
 #include <cmath>
 #include <ctime>
-#include <iostream>
-#include <fstream>
 #include <filesystem>
+#include <fstream>
+#include <iostream>
+#include <string>
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
 #endif
+#include <raylib.h>
 
+#include "headers/alien.h"
+#include "headers/backgrounds.h"
+#include "headers/colours.h"
 #include "headers/globals.h"
 #include "headers/key_input.h"
 #include "headers/penguin.h"
-#include "headers/spaceship.h"
-#include "headers/alien.h"
 #include "headers/projectile.h"
-#include "headers/colours.h"
-#include "headers/backgrounds.h"
+#include "headers/spaceship.h"
+
+#include "headers/main.h"
 
 void LoadHighScore()
 {
@@ -38,7 +40,7 @@ void LoadHighScore()
   if (!filesystemMounted)
   {
     EM_ASM({
-      var idbfs = (typeof IDBFS !== 'undefined') ? IDBFS : (FS.filesystems ? FS.filesystems.IDBFS : null);
+      var idbfs = (typeof IDBFS != = 'undefined') ? IDBFS : (FS.filesystems ? FS.filesystems.IDBFS : null);
       if (idbfs)
       {
         try
@@ -227,6 +229,8 @@ int main()
   SetConfigFlags(FLAG_MSAA_4X_HINT | FLAG_WINDOW_HIGHDPI);
   InitWindow(1280, 720, "Grand Tour: Cold Front");
   InitViewport();
+  SetGesturesEnabled(GESTURE_PINCH_IN | GESTURE_PINCH_OUT);
+
   SetTargetFPS(60);
 
   LoadHighScore();
@@ -266,9 +270,13 @@ int main()
   {
     frameCount++;
     float dt = GetFrameTime();
-    if (dt > 0.1f) {
+    if (dt > 0.1f)
+    {
       dt = 0.1f;
     }
+
+    // Track continuous multi-touch mobile pinch scaling
+    HandleMobilePinchZoom();
 
     if (IsWindowResized())
     {
@@ -693,9 +701,9 @@ int main()
 
     // Hardware Scaling Step: Draw the target canvas scaled onto the real monitor screen
     BeginDrawing();
-    ClearBackground(BLACK); 
+    ClearBackground(BLACK);
 
-    UpdateViewportScale(); 
+    UpdateViewportScale();
     DrawTexturePro(targetCanvas.texture, sourceRec, destRec, {0, 0}, 0.0f, WHITE);
 
     EndDrawing();

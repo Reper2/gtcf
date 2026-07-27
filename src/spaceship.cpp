@@ -8,19 +8,20 @@
 // https://www.jpl.nasa.gov/galleries/visions-of-the-future/#grid-127451-1
 
 
-#include <vector>
 #include <array>
 #include <algorithm>
 #include <cmath>
+#include <vector>
 
 #include <raylib.h>
-#include "rlgl.h"
 #include <raymath.h>
+#include <rlgl.h>
+
+#include "headers/colours.h"
+#include "headers/globals.h"
+#include "headers/penguin.h"
 
 #include "headers/spaceship.h"
-#include "headers/globals.h"
-#include "headers/colours.h"
-#include "headers/penguin.h"
 
 Spaceship::Spaceship(float x, float y, float size, const std::array<Color, 4> &shipPallete, Penguin *pilot)
     : x(x), y(y), colour(shipPallete), pilot(pilot)

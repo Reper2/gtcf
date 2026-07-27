@@ -7,20 +7,21 @@
 // using concepts from the poster including spaceships and exhaust trails.
 // https://www.jpl.nasa.gov/galleries/visions-of-the-future/#grid-127451-1
 
-#include <vector>
-#include <array>
 #include <algorithm>
+#include <array>
 #include <cmath>
+#include <vector>
 
 #include <raylib.h>
 #include "rlgl.h"
 #include <raymath.h>
 
-#include "headers/globals.h"
-#include "headers/projectile.h"
-#include "headers/spaceship.h"
 #include "headers/alien.h"
 #include "headers/colours.h"
+#include "headers/globals.h"
+#include "headers/spaceship.h"
+
+#include "headers/projectile.h"
 
 float Projectile::lastDamageTime = 0.0f;
 float Projectile::damageCooldown = 1000.0f;

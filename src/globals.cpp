@@ -7,30 +7,31 @@
 // using concepts from the poster including spaceships and exhaust trails.
 // https://www.jpl.nasa.gov/galleries/visions-of-the-future/#grid-127451-1
 
-#include <raylib.h>
-#include <vector>
-#include <array>
-#include <string>
-#include <cmath>
-#include <random>
-#include <iostream>
-#include <unordered_map>
 #include <algorithm>
-#include <type_traits>
-#include <fstream>
+#include <array>
+#include <cmath>
 #include <filesystem>
+#include <fstream>
+#include <iostream>
+#include <random>
+#include <string>
+#include <type_traits>
+#include <unordered_map>
+#include <vector>
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
 #include <emscripten/html5.h>
 #endif
+#include <raylib.h>
 
-#include "headers/colours.h"
-#include "headers/backgrounds.h"
-#include "headers/penguin.h"
-#include "headers/spaceship.h"
 #include "headers/alien.h"
+#include "headers/backgrounds.h"
+#include "headers/colours.h"
+#include "headers/penguin.h"
 #include "headers/projectile.h"
+#include "headers/spaceship.h"
+
 #include "headers/globals.h"
 
 template <typename Entity, typename... Args>
@@ -216,20 +217,44 @@ void InitViewport()
   UpdateViewportScale();
 }
 
+float viewportZoom = 1.0f; 
+
 void UpdateViewportScale() noexcept
 {
-  // Query physical window dimensions
   const float displayWidth = (float)GetScreenWidth();
   const float displayHeight = (float)GetScreenHeight();
 
-  // Compute aspect-ratio scaling bounds
-  const float scale = std::min(displayWidth / (float)virtualWidth, displayHeight / (float)virtualHeight);
+  // Apply the viewportZoom multiplier into the letterbox scale bounds
+  const float scale = std::min(displayWidth / (float)virtualWidth, displayHeight / (float)virtualHeight) * viewportZoom;
 
-  // Center virtual target cleanly in hardware/browser window
   destRec.width = (float)virtualWidth * scale;
   destRec.height = (float)virtualHeight * scale;
   destRec.x = (displayWidth - destRec.width) / 2.0f;
   destRec.y = (displayHeight - destRec.height) / 2.0f;
+}
+
+void HandleMobilePinchZoom() noexcept
+{
+    // Check if any pinch gesture is currently active
+    int gesture = GetGestureDetected();
+    if ((gesture & (GESTURE_PINCH_IN | GESTURE_PINCH_OUT)) != 0)
+    {
+        // Get the scale vector change (x represents the scale ratio)
+        Vector2 pinchVector = GetGesturePinchVector();
+        float pinchZoomFactor = pinchVector.x;
+        
+        // Raylib returns 0.0f when the pinch is reset or inactive
+        if (pinchZoomFactor > 0.0f)
+        {
+            viewportZoom *= pinchZoomFactor;
+            
+            // Clamp the zoom boundaries
+            viewportZoom = std::clamp(viewportZoom, 0.5f, 2.5f);
+            
+            // Immediately update screen scaling metrics
+            UpdateViewportScale();
+        }
+    }
 }
 
 void UnloadViewport() noexcept
@@ -330,41 +355,42 @@ bool ActionPressed(InputAction action)
   {
     for (KeyboardKey key : it->second)
     {
-      if (IsKeyDown(key))
-        return true;
+      if (IsKeyDown(key)) return true;
     }
   }
 
   if (action == ACTION_LAUNCH && IsKeyPressed(KEY_R))
     return true;
 
+  // Improved Multi-Touch Gesture / Virtual Pad Scanning
   int touchCount = GetTouchPointCount();
   for (int i = 0; i < touchCount; i++)
   {
     Vector2 physicalTouch = GetTouchPosition(i);
 
+    // Map physical screen touch coordinates directly to virtual resolution space
     float virtX = ((physicalTouch.x - destRec.x) / destRec.width) * virtualWidth;
     float virtY = ((physicalTouch.y - destRec.y) / destRec.height) * virtualHeight;
 
-    if (virtX < (virtualWidth / 2.0f))
+    // Ignore touches outside the active letterboxed canvas area
+    if (virtX < 0 || virtX > virtualWidth || virtY < 0 || virtY > virtualHeight)
+      continue;
+
+    // Define broader, friendly touch zones (Left side: Movement control grid, Right side: Fire/Actions)
+    if (virtX < (virtualWidth * 0.45f))
     {
-      if (action == ACTION_UP && virtY < (virtualHeight / 3.0f))
-        return true;
-      if (action == ACTION_DOWN && virtY > (virtualHeight * 2.0f / 3.0f))
-        return true;
-      if (action == ACTION_LEFT && virtX < (virtualWidth / 4.0f))
-        return true;
-      if (action == ACTION_RIGHT && virtX > (virtualWidth / 4.0f))
-        return true;
+      // Left Virtual D-Pad zones
+      if (action == ACTION_UP && virtY < (virtualHeight * 0.4f)) return true;
+      if (action == ACTION_DOWN && virtY > (virtualHeight * 0.6f)) return true;
+      if (action == ACTION_LEFT && virtX < (virtualWidth * 0.2f)) return true;
+      if (action == ACTION_RIGHT && virtX >= (virtualWidth * 0.2f) && virtX < (virtualWidth * 0.45f)) return true;
     }
-    else
+    else if (virtX > (virtualWidth * 0.55f))
     {
-      if (action == ACTION_FIRE && virtY < (virtualHeight / 2.0f))
-        return true;
-      if (action == ACTION_ICE && virtY >= (virtualHeight / 2.0f))
-        return true;
-      if (action == ACTION_LAUNCH)
-        return true;
+      // Right Action zones (Fire / Ice / Launch)
+      if (action == ACTION_FIRE && virtY < (virtualHeight * 0.5f)) return true;
+      if (action == ACTION_ICE && virtY >= (virtualHeight * 0.5f)) return true;
+      if (action == ACTION_LAUNCH) return true;
     }
   }
   return false;

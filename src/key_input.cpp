@@ -8,14 +8,16 @@
 // https://www.jpl.nasa.gov/galleries/visions-of-the-future/#grid-127451-1
 
 
-#include <raylib.h>
-#include <string>
+#include <array>
 #include <cmath>
+#include <string>
 #include <vector>
-#include "headers/key_input.h"
+
 #include "headers/globals.h"
-#include "headers/spaceship.h"
 #include "headers/projectile.h"
+#include "headers/spaceship.h"
+
+#include "headers/key_input.h"
 
 bool resolveKeys(const unsigned index, const std::string &keys)
 {

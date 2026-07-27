@@ -8,15 +8,17 @@
 // https://www.jpl.nasa.gov/galleries/visions-of-the-future/#grid-127451-1
 
 
-#include <raylib.h>
 #include <algorithm>
 #include <array>
 #include <cmath>
 
-#include "rlgl.h"
-#include "headers/penguin.h"
-#include "headers/globals.h"
+#include <raylib.h>
+#include <rlgl.h>
+
 #include "headers/colours.h"
+#include "headers/globals.h"
+
+#include "headers/penguin.h"
 
 Penguin::Penguin(float x, float y, float size, Color colour) noexcept
     : x(x), y(y), colour(colour), alpha(255), slideAngle(0.0f), flap(false)

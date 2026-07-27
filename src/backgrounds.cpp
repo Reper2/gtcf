@@ -8,11 +8,14 @@
 // https://www.jpl.nasa.gov/galleries/visions-of-the-future/#grid-127451-1
 
 
-#include <raylib.h>
-#include <string>
 #include <array>
-#include "headers/backgrounds.h"
+#include <string>
+
+#include <raylib.h>
+
 #include "headers/globals.h"
+
+#include "headers/backgrounds.h"
 
 // Define the literal string data array
 constexpr std::array<std::string_view, 21> BACKGROUND_IMAGES = {

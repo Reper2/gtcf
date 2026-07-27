@@ -7,10 +7,12 @@
 // using concepts from the poster including spaceships and exhaust trails.
 // https://www.jpl.nasa.gov/galleries/visions-of-the-future/#grid-127451-1
 
+#include <array>
 #include <string>
 #include <vector>
-#include <array>
+
 #include <raylib.h>
+
 #include "headers/colours.h"
 
 constexpr Color CYAN = {0, 255, 255, 255};

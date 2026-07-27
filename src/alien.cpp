@@ -7,13 +7,13 @@
 // using concepts from the poster including spaceships and exhaust trails.
 // https://www.jpl.nasa.gov/galleries/visions-of-the-future/#grid-127451-1
 
+#include <limits>
 #include <string>
 #include <vector>
-#include <limits>
 
 #include <raylib.h>
-#include <rlgl.h>
 #include <raymath.h>
+#include <rlgl.h>
 
 #include "headers/alien.h"
 #include "headers/colours.h"

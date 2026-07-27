@@ -9,8 +9,8 @@
 
 
 #pragma once
-#include <vector>
 #include <string>
+#include <vector>
 #include "spaceship.h"
 
 class Alien

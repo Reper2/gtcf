@@ -10,7 +10,6 @@
 
 #pragma once
 #include <string>
-
 class Alien; // Forward declaration
 
 class Projectile

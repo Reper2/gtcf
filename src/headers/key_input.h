@@ -9,8 +9,8 @@
 
 
 #pragma once
-#include <string>
 #include <array>
+#include <string>
 
 #include "penguin.h"
 #include "spaceship.h"
