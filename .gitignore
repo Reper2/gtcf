@@ -20,4 +20,4 @@ data/
 logo.png
 
 .vscode/record
-.DS_Store
+*/**/.DS_Store
