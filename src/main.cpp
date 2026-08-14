@@ -412,8 +412,8 @@ int main()
       {
         const int randNum = static_cast<int>(randomFloat(0, loadedBgs.size()));
         bg = loadedBgs[randNum];
-        // Caps the maximum spawn at 24 aliens, and rounds to a whole number
-        const unsigned waveSize = std::min<unsigned>(24, 2 * (1 + score / 1000));
+        // Caps the maximum spawn at 32 aliens, and rounds to a whole number
+        const unsigned waveSize = std::min<unsigned>(32, 2 * (1 + score / 1000));
         spawnAlienWave(waveSize, allShips);
       }
 

@@ -13,6 +13,8 @@ include(FetchContent)
 
 set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(BUILD_GAMES    OFF CACHE BOOL "" FORCE)
+# Build Raylib as a static library to prevent dynamic Raylib DLL generation
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
 
 FetchContent_Declare(
     raylib
@@ -48,7 +50,24 @@ target_include_directories(GrandTourColdFront PRIVATE
 # Linking to raylib automatically passes its public include headers down
 target_link_libraries(GrandTourColdFront PRIVATE raylib)
 
-# Web / Emscripten Specific Settings
+# --- Static Runtime Linking for Windows (MinGW) ---
+# Embeds GCC, C++ standard lib, and pthread runtime code directly inside the EXE.
+if(WIN32 AND MINGW)
+    target_link_options(GrandTourColdFront PRIVATE
+        -static
+        -static-libgcc
+        -static-libstdc++
+    )
+    
+    # Required system libraries for Raylib static builds on Windows
+    target_link_libraries(GrandTourColdFront PRIVATE
+        winmm
+        gdi32
+        opengl32
+    )
+endif()
+
+# --- Web / Emscripten Specific Settings ---
 if(EMSCRIPTEN)
     set_target_properties(GrandTourColdFront PROPERTIES 
         OUTPUT_NAME "index"

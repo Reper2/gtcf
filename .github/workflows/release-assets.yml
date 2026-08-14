@@ -44,7 +44,8 @@ jobs:
         if: runner.os == 'Windows'
         uses: msys2/setup-msys2@v2
         with:
-          mingw64: true
+          msystem: MINGW64
+          path-type: inherit
           install: mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake mingw-w64-x86_64-ninja
 
       # --- CMake Build Step ---
@@ -68,36 +69,22 @@ jobs:
         run: |
           mkdir -p release_stage
           
-          # Match your exact CMake target name
-          if [ -f "build/Release/GrandTourColdFront${{ matrix.exe_suffix }}" ]; then
-            cp "build/Release/GrandTourColdFront${{ matrix.exe_suffix }}" release_stage/
-          elif [ -f "build/GrandTourColdFront${{ matrix.exe_suffix }}" ]; then
+          # Check for built executable in Ninja output directory or MSVC fallback
+          if [ -f "build/GrandTourColdFront${{ matrix.exe_suffix }}" ]; then
             cp "build/GrandTourColdFront${{ matrix.exe_suffix }}" release_stage/
+            echo "Copied executable from build/"
+          elif [ -f "build/Release/GrandTourColdFront${{ matrix.exe_suffix }}" ]; then
+            cp "build/Release/GrandTourColdFront${{ matrix.exe_suffix }}" release_stage/
+            echo "Copied executable from build/Release/"
+          else
+            echo "Error: Could not find build executable!" >&2
+            exit 1
           fi
 
           # Safe staging copies for supplementary files (only copy if they exist)
           [ -d "resources" ] && cp -r resources release_stage/ || echo "No resources folder found"
           [ -f "README.md" ] && cp README.md release_stage/ || echo "No README found"
           [ -f "LICENSE.txt" ] && cp LICENSE.txt release_stage/ || echo "No LICENSE found"
-
-      # --- Locate and Bundle Windows MinGW Runtime DLLs ---
-      - name: Bundle Windows GCC DLLs
-        if: runner.os == 'Windows'
-        shell: bash
-        run: |
-          copy_if_exists() {
-            local dll_name="$1"
-            local found_path=$(find /c/msys64/mingw64/bin/ -name "$dll_name" 2>/dev/null | head -n 1)
-            if [ -n "$found_path" ]; then
-              cp "$found_path" release_stage/
-              echo "Bundled $dll_name"
-            else
-              echo "Warning: Could not locate $dll_name"
-            fi
-          }
-          copy_if_exists "libgcc_s_seh-1.dll"
-          copy_if_exists "libstdc++-6.dll"
-          copy_if_exists "libwinpthread-1.dll"
 
       # --- Archive Generation ---
       - name: Archive Release Package (Linux)
@@ -127,6 +114,6 @@ jobs:
         with:
           files: ${{ matrix.artifact_name }}
           draft: true
-          generate_release_notes: true # AUTOMATED CHANGELOG GENERATOR!
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
